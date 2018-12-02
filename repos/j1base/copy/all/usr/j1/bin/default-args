@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+# ------------------------------------------------------------------------------
+# ~/repos/j1image/copy/all/usr/j1/bin/default-args
+# J1 Docker - (Ruby) Helper script to eval and map default
+# commands for the j1image app
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+
+require "shellwords"
+
+def to_bool(val)
+  val == "true" || val == "1" ? "true" : nil
+end
+
+# ------------------------------------------------------------------------------
+# Cast to boolean
+#
+%w(VERBOSE DRAFTS FORCE_POLLING).each do |v|
+  ENV[v] = to_bool(ENV[v])
+end
+
+# ------------------------------------------------------------------------------
+# Lasy functions to react on several options
+#
+def build?; %W(b build).include?(ARGV[0]); end
+def serve?; %W(s serve server).include?(ARGV[0]); end
+def safe?; ENV["JEKYLL_DOCKER_TAG"] == "pages" || ENV["JEKYLL_DOCKER_NAME"] == "minimal"; end
+def debug?; ENV["VERBOSE"]; end
+
+# ------------------------------------------------------------------------------
+# Argument modifiers based on environmental settings
+#
+ARGV.shift and ARGV.unshift("serve") if "s" == ARGV[0]
+ARGV.push("--force_polling") if ENV["FORCE_POLLING"] && (build? || serve?)
+ARGV.unshift(ARGV.shift, "--host", "0.0.0.0") if serve?
+ARGV.push("--drafts") if ENV["DRAFTS"]
+ARGV.push("--verbose") if debug?
+
+# ------------------------------------------------------------------------------
+# Pass modified arguments
+#
+$stdout.puts Shellwords.shelljoin(ARGV)

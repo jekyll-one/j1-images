@@ -1,0 +1,25 @@
+# ------------------------------------------------------------------------------
+# ~/repos/j1base/opts.yml
+# Defines all (image-level) data needed for image creation
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+aliases:
+  j1image:  jekyllone/j1image:latest
+  j1app:    jekyllone/j1app:latest
+gems:
+  all:
+    - forwardable-extended
+    - mercenary
+    - pathutil
+    - fileutils
+    - logger
+    - colorator
+    - dotenv
+    - j1_template_mde

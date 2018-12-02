@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# ------------------------------------------------------------------------------
+# ~/repos/j1base/copy/all/usr/j1/bin/connected
+# J1 Docker - Helper script to check for an active
+# Internet connection
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+set -e
+
+[[ ${DEBUG} == true ]] && set -x
+
+con=$J1_VAR_DIR/con
+dis=$J1_VAR_DIR/dis
+
+# ------------------------------------------------------------------------------
+# Check the connection state. If found both, someting went terribly wrong.
+# This isn't very likely but it could very well happen and it is needed
+# to guard against.
+# ------------------------------------------------------------------------------
+[ -f $dis ] && [ -f $con ] &&  rm -f $dis $con
+([ "$CONNECTED" =  "true" ] || [ -f $con ]) && exit 0
+([ "$CONNECTED" = "false" ] || [ -f $dis ]) && exit 1
+
+# ------------------------------------------------------------------------------
+# If NOT connected, forced as connected or detected as NOT connected, a
+# additional check using 'wget' (because of Proxies) verfies whether
+# a connection to the internet is in place.
+# ------------------------------------------------------------------------------
+d=https://www.google.com
+if wget -q --spider $d -O /dev/null 2>/dev/null; then
+  su-exec j1 touch $con
+  exit 0
+else
+  su-exec j1 touch $dis
+  exit 1
+fi

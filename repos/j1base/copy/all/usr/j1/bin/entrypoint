@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# ------------------------------------------------------------------------------
+# ~/repos/dev/helper/all/usr/jekyll/bin/entrypoint
+# J1 Docker - Helper script for Docker. Defines the entrypoint
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+set -e
+
+[[ ${DEBUG} == true ]] && set -x
+
+# ------------------------------------------------------------------------------
+: ${JEKYLL_UID:=$(id -u j1)}
+: ${JEKYLL_GID:=$(id -g j1)}
+
+# ------------------------------------------------------------------------------
+export JEKYLL_UID
+export JEKYLL_GID
+
+# ------------------------------------------------------------------------------
+#   Users can customize our UID's to fit their own so that
+#   we don't have to chown constantly.  Well it's not like
+#   we do so much of it (anymore) it's slow, but we do
+#   change permissions which can result in some bad
+#   behavior on OSX.
+# ------------------------------------------------------------------------------
+if [ "$JEKYLL_UID" != "0" ] && [ "$JEKYLL_UID" != "$(id -u j1)" ]; then
+  usermod  -u $JEKYLL_UID j1
+  groupmod -g $JEKYLL_GID j1
+  chown_args=""
+
+  [ "$FULL_CHOWN" ] && chown_args="-R"
+  for d in "$JEKYLL_DATA_DIR" "$JEKYLL_VAR_DIR"; do
+    chown $chown_args j1:j1 "$d"
+  done
+fi
+
+# ------------------------------------------------------------------------------
+#echo "entrypoint args: $@"
+exec "$@"

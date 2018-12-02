@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# ------------------------------------------------------------------------------
+# ~/repos/j1image/copy/all/usr/j1/bin/entrypoint
+# J1 Docker - Defines the entrypoint if the j1image app is started
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+set -e
+
+[[ $DEBUG == true ]] && set -x
+
+# ------------------------------------------------------------------------------
+: ${J1_UID:=$(id -u j1)}
+: ${J1_GID:=$(id -g j1)}
+
+# ------------------------------------------------------------------------------
+# Dynamic environment settings at run-time
+# ------------------------------------------------------------------------------
+export J1_UID
+export J1_GID
+
+# ------------------------------------------------------------------------------
+# Users can customize UID's to fit their own app environment to modify
+# these settings in a central place.
+# ------------------------------------------------------------------------------
+if [ "$J1_UID" != "0" ] && [ "$J1_UID" != "$(id -u j1)" ]; then
+  usermod  -u $J1_UID j1
+  groupmod -g $J1_GID j1
+  chown_args=""
+
+  [ "$FULL_CHOWN" ] && chown_args="-R"
+  for d in "$J1_DATA_DIR" "$J1_VAR_DIR"; do
+    chown $chown_args j1:j1 "$d"
+  done
+fi
+
+# ------------------------------------------------------------------------------
+# Change the ownership to j1 to allow root access to the Docker Daemon
+# on the host system
+# ------------------------------------------------------------------------------
+chown -R j1:j1 $DOCKER_SOCKET
+
+# ------------------------------------------------------------------------------
+# Run finally what was requested as a command to run
+# ------------------------------------------------------------------------------
+[[ $DEBUG == true ]] && echo "entrypoint args: $@"
+exec "$@"

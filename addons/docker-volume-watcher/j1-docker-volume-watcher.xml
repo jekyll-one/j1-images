@@ -1,0 +1,44 @@
+<!--
+# ==============================================================================
+#   J1: ~/j1builder.xml
+#   Configuration file to run Jekyll as a (Windows) service
+#
+#   Product/Info:
+#   http://jekyll.one
+#   https://github.com/kohsuke/winsw
+#
+#   Copyright (C) 2017 Juergen Adams
+#
+#   J1 Template is licensed under the MIT License.
+#   For details, see https://jekyll.one
+#
+# ==============================================================================
+-->
+<service>
+    <!-- winsw specific configuration -->
+    <configuration>
+        <!-- To work with UAC-enabled Windows; for details see: http://support.microsoft.com/kb/936707 -->
+        <runtime>
+            <generatePublisherEvidence enabled="false" />
+        </runtime>
+    </configuration>
+    <!-- service specific configuration -->
+    <id>j1-docker-volume-watcher</id>
+    <name>j1-docker-volume-watcher</name>
+    <startmode>manual</startmode>
+    <env name="DOCKER_CERT_PATH" value="C:\Users\jadams\.docker\machine\machines\default" />
+    <env name="DOCKER_HOST" value="tcp://vcentos:2376" />
+    <env name="DOCKER_TLS_VERIFY" value="1" />
+    <description>Inspect all running Docker containers and notify about changes in mounted folders</description>
+    <executable>C:\Windows\System32\cmd.exe</executable>
+    <startargument>/C</startargument>
+    <startargument>docker-volume-watcher.cmd</startargument>
+    <stopparentprocessfirst>true</stopparentprocessfirst>
+    <workingdirectory>C:\j1-docker-volume-watcher</workingdirectory>    
+    <!-- logging specific configuration -->
+    <logpath>C:\j1-docker-volume-watcher\log</logpath>
+    <log mode="roll-by-size">
+        <sizeThreshold>4096</sizeThreshold>
+        <keepFiles>2</keepFiles>
+    </log>  
+</service>

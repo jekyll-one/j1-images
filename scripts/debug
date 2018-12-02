@@ -1,0 +1,32 @@
+#!/usr/bin/env bash -l
+# ------------------------------------------------------------------------------
+#  ~/script/debug
+#  J1 Docker - Helper script for the (image) debug process
+#
+#  Product/Info:
+#  https://jekyll-one.com
+#
+#  Copyright (C) 2018 Juergen Adams
+#
+#  J1 Template is licensed under the MIT License.
+#  See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+set -e
+
+IMAGE=${IMAGE:-"jekyll/jekyll"}
+docker system prune -f
+
+latest=$(ruby -e '
+  require "yaml"
+  $stdout.puts YAML.load_file("opts.yml")["tags"].keys.sort.keep_if { |v|
+    v =~ /[0-9]\./
+  }.last
+')
+
+VERSION=${VERSION:-$latest}
+docker rmi "$IMAGE:$VERSION" || true
+bundle exec docker-template build "$IMAGE:$VERSION" --no-push
+docker run --rm -it "$IMAGE:$VERSION" bash

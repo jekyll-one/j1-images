@@ -1,0 +1,21 @@
+#!/usr/bin/env bash -l
+# ------------------------------------------------------------------------------
+#  ~/script/deploy
+#  J1 Docker - Helper script for the (image) deployment process
+#
+#  Product/Info:
+#  https://jekyll-one.com
+#
+#  Copyright (C) 2018 Juergen Adams
+#
+#  J1 Template is licensed under the MIT License.
+#  See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+set -e
+
+if [ "$TRAVIS_PULL_REQUEST" = "false" ]
+  then bundle exec docker-template push $DOCKER_REPO
+fi

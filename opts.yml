@@ -1,0 +1,27 @@
+# ------------------------------------------------------------------------------
+# ~/opts.yml
+# Defines all (top-level) data needed for image creation and
+# deployment (on Docker Hub)
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+maintainer:     Juergen Adams <juergen@jekyll-one.com>
+user:           jekyllone
+push:           false
+aliases:
+  latest:       3.8.5
+  stable:       3.8.5
+#  3.8:         3.8.5
+#  3:           3.8.5
+tags:
+  3.8.5:        stable
+releases:
+  tag:
+#   j1app:      3.8.5
+    j1base:     3.8.5
