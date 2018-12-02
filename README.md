@@ -8,7 +8,7 @@ wonder, Linux support developers at it's best.
 
 Creating a fully equipped Jekyll developing enviroment may take a while
 anyway. If you don't want to mixup e.g. already installed applications like
-Python, Ruby or NodeJS on your existing OS, you can go for J1 Image.
+Python, Ruby or NodeJS on your existing OS, you can go for J1 Images.
 
 As mentioned, on _Linux_, all languages and tools are fully supported, mostly
 installed already in their latest versions. Unfortuneatly, this is **not**
@@ -21,14 +21,15 @@ containers**.
 
 And you're done less than 15 minutes ..
 
-# J1 Image
+# J1 Images
 
-`J1 Image` is a Ruby project to create and manage **Docker Images** for
-developing and running static **Jekyll Webs**. The images are optimized for
-using `J1 Template` but can be used for **all** Jekyll based web sites as
-well.
+`J1 Images` is a Ruby project to create and manage **Docker Images** for
+developing and running static **Jekyll Webs**. The images created are
+optimized for the `J1 Template` project but can be used for **all** Jekyll
+based web sites as well.
 
-`J1 Image` supports all development and run-time processes for `J1 Template`.
+`J1 Images` supports all Docker images needed for all development and run-time
+processes.
 The image contains, beside of the RubyGem `Jekyll` and `J1 Template` all
 development dependencies like Git, the languages Ruby, Python and NodeJS plus
 a set of helpful applications ready to use.
@@ -57,14 +58,15 @@ installation of the Docker software is needed. Check the pages
 [docs@docker](https://docs.docker.com/) how to get an installation package
 for your platform, if not already installed.
 
-To start using J1 Image immediately, already generated images are available
+To start using J1 Images immediately, already generated images are available
 at [jekyllone](https://hub.docker.com/u/jekyllone/) at Docker Hub:
 
-*   [jekyllone/j1base](https://hub.docker.com/r/jekyllone/j1base/) - Base image, all Core software bundled,
+*   `jekyllone/j1image` - Image to create Docker images for the `J1 template` project from the scratch
+*   `jekyllone/j1app` - Image to run J1 Template based Web sites as an Docker App
+*   [jekyllone/j1base](https://hub.docker.com/r/jekyllone/j1base/) - Base image, all core software bundled,
 only selected RubyGem included
-*   `jekyllone/j1app` - Image to run J1 Template based Web sites as an App
 *   [jekyllone/j1](https://hub.docker.com/r/jekyllone/j1/) - Fully equipped image based on `jekyllone/j1base`
-but includes all Rubies needed
+but includes all Rubies needed to run and develop a web site
 
 > **NOTE**:
 > The image `jekyllone/j1app` is currently under construction and **not**
@@ -73,8 +75,8 @@ but includes all Rubies needed
 
 ### Create and run a Web
 
-To starting the fastest way, the Docker image [jekyllone/j1](https://hub.docker.com/r/jekyllone/j1/)
-can be used to create **and** run a so-called **starter web** Starter webs are
+To start the fastest way, the Docker image [jekyllone/j1](https://hub.docker.com/r/jekyllone/j1/)
+can be used to create **and** run a so-called **starter web**. Starter webs are
 J1 site skeletons containing a bunch of examples how to use J1 Template for
 your new web site.
 
@@ -83,7 +85,7 @@ Create a folder for your new J1 Webs and change to that directory, e.g.
 
 ```bash
 docker run --rm \
-  --volume=$PWD:/srv/jekyll \
+  --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
   j1 generate starter
 ```
@@ -96,10 +98,8 @@ Change to that folder and run:
 
 ```bash
 docker run --rm \
-  --name starter \
-  --hostname starter_web \
-  --volume=$PWD:/srv/jekyll \
-  -p 35729:35729 -p 40000:40000 \
+  --volume=$PWD:/j1/data \
+  --publish=35729:35729 --publish=40000:40000 \
   -it jekyllone/j1:latest \
   j1 serve --incremental --livereload
 ```
@@ -135,7 +135,7 @@ local J1 Web folder **j1web**:
 ```sh
 docker run --rm \
   --user $(id -u $(whoami)) \
-  --volume=$PWD:/srv/jekyll \
+  --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
   git clone https://github.com/jekyll-one/j1_template_mde_dev.git
 ```
@@ -146,7 +146,7 @@ the development environment for the first use.
 ```sh
 docker run --rm \
   --user $(id -u $(whoami)) \
-  --volume=$PWD:/srv/jekyll \
+  --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
   yarn setup
 ```
@@ -191,10 +191,8 @@ To run the build-in starter web for development, simply run:
 
 ```sh
 docker run --rm \
-  --name develop \
-  --hostname j1develop \
-  --volume=$PWD:/srv/jekyll \
-  -p 35729:35729 -p 41000:41000 \
+  --volume=$PWD:/j1/data \
+  --publish=35729:35729 --publish=41000:41000 \
   -it jekyllone/j1:latest \
   yarn site
 ```
@@ -211,7 +209,7 @@ starter_web: $ run-p -s develop:*
 starter_web: Configuration file: _config.yml
 starter_web: ℹ ｢wds｣: Project is running at http://0.0.0.0:41000/
 starter_web: ℹ ｢wds｣: webpack output is served from /assets/themes/j1/core/js
-starter_web: ℹ ｢wds｣: Content not from webpack is served from /srv/jekyll/packages/400_starter_web/_site
+starter_web: ℹ ｢wds｣: Content not from webpack is served from /j1/data/packages/400_starter_web/_site
 starter_web:             Source: .
 starter_web:        Destination: _site
 starter_web:  Incremental build: enabled
@@ -244,11 +242,9 @@ Run the site like so:
 
 ```sh
 docker run --rm \
-  --name develop \
-  --hostname j1develop \
   --env DISABLE_WP_HOST_CHECK=true \
-  --volume=$PWD:/srv/jekyll \
-  -p 35729:35729 -p 41000:41000 \
+  --volume=$PWD:/j1/data \
+  --publish=35729:35729 --publish=41000:41000 \
   -it jekyllone/mydev:latest \
   yarn site
 ```
@@ -283,10 +279,10 @@ J1 Image **jekyllone/j1base:latest** to recreate **all** RubyGems or based on
 the current development image **jekyllone/j1:latest** to update for newer
 or additional Rubies.
 
-The software bundled by J1 Image contains an adapted **bundler** to install
+The software bundled by J1 Images contains an adapted **bundler** to install
 any dependencies that you list inside of your `Gemfile`, matching the versions
 you have in your `Gemfile.lock`; including Jekyll if you have a version that
-does not match the version of the J1 Image you are using.
+does not match the version of the J1 Images you are using.
 
 The update process is quite easy and use the capabilities of Docker to create
 new images based on existing containers using `docker commit`. First create
@@ -300,7 +296,7 @@ Change to the folder that contains your modified Gemfile:
 ```sh
 docker run \
   --name temp_container \
-  --volume=$PWD:/srv/jekyll \
+  --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
   bundle install
 ```
@@ -319,7 +315,7 @@ using the J1 base image for your modified web:
 ```sh
 docker run  \
   --name temp_container \
-  --volume=$PWD:/srv/jekyll \
+  --volume=$PWD:/j1/data \
   -it jekyllone/j1base:latest \
   yarn site
 ```
@@ -330,13 +326,11 @@ docker run  \
 You can build images or any specific tag of an image running
 
 ```sh
-bundle exec docker-template build
-```
-
-or
-
-```sh
-bundle exec docker-template build repo:tag
+docker run --rm \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1images \
+  j1 build <repo_name>:<tag>
 ```
 
 It's simple like that to build images!
@@ -344,13 +338,21 @@ It's simple like that to build images!
 Example:
 
 ```sh
-bundle exec docker-template build j1dev:latest --no-push
+docker run --rm \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1images \
+  j1 build j1base:latest
 ```
 
 ### Reset a Build
 
 ```sh
-bundle exec docker-template clean
+docker run --rm \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1images \
+  j1 clean
 ```
 
 ### Remove <none> images after Build
@@ -376,17 +378,38 @@ docker image ls -a | grep -v "^<none>"
 
 To have a look inside an image, run a container using a bash (shell):
 
+```sh
+docker run --rm \
+  --name j1_container \
+  --hostname j1_container \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1:latest \
+  bash
+```
+
+or if a GUI is more convinient, the buildin _Midnight Commander_ can be used
+to explore
 
 ```sh
 docker run --rm \
-  --name j1_develop \
-  --hostname j1_develop \
-  --volume=$PWD:/srv/jekyll \
-  -it jekyllone/j1dev:3.8 bash
+  --name j1_container \
+  --hostname j1_container \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1:latest \
+  mc
 ```
-=======
 
-This will print you all untagged images
+## What are none-none images?
+
+See: [What are Docker none:none images?](https://www.projectatomic.io/blog/2015/07/what-are-docker-none-none-images/)
+See: [dockviz](https://github.com/justone/dockviz)
+
+docker image ls -f dangling=true -q
+
+docker image rm -f $(docker image ls -f dangling=true -q)
+
+
+## Untagged images
 
 ```sh
 docker image ls -a | grep "^<none>" | awk "{print $3}"
@@ -401,28 +424,6 @@ docker image rm --force $(docker image ls -a | grep "^<none>" | awk "{print $3}"
 docker image rm --force $(docker image ls -a | grep "^<none>" | sed 's/  */ /g' | cut -d" " -f 3)
 ```
 
-
-## Explore an Image
-
-To have a look inside an image, run a container using a bash (shell):
-
-
-```sh
-docker run --rm \
-  --name j1_develop \
-  --hostname j1_develop \
-  --volume=$PWD:/srv/jekyll \
-  -it jekyllone/j1dev:latest bash
-```
+## Format the output of docker commands
 
 docker images --format '{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}' | sort -r | column -t
-
-
-== What are docker none-none images?
-
-See: [What are Docker none:none images?](https://www.projectatomic.io/blog/2015/07/what-are-docker-none-none-images/)
-See: [dockviz](https://github.com/justone/dockviz)
-
-docker image ls -f dangling=true -q
-
-docker image rm -f $(docker image ls -f dangling=true -q)
