@@ -66,12 +66,6 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US
 
 # ------------------------------------------------------------------------------
-# USER - Export environment settings
-# ------------------------------------------------------------------------------
-ENV GIT_USER_EMAIL="juergen@jekyll-one.com"
-ENV GIT_USER_NAME="Juergen Adams"
-
-# ------------------------------------------------------------------------------
 # MAIN - Export environment settings
 # ------------------------------------------------------------------------------
 ENV VERBOSE=false

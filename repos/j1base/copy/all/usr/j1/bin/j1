@@ -76,14 +76,6 @@ if [[ -f Gemfile ]] && connected; then
 fi
 
 # ------------------------------------------------------------------------------
-# GIT - Set minimal globals (user)
-# ------------------------------------------------------------------------------
-if [[ $(id -u) != 0 ]] && [[ ${exe} =~ git ]]; then
-  su-exec j1 git config --global user.email $(echo $GIT_USER_EMAIL)
-  su-exec j1 git config --global user.name  $(echo $GIT_USER_NAME)
-fi
-
-# ------------------------------------------------------------------------------
 # Print Ruby version as a banner
 # ------------------------------------------------------------------------------
 echo "$(ruby --version)"
