@@ -38,7 +38,7 @@ if [[ ${args[@]} =~ generate ]]; then
   fi
 elif [[ ${args[@]} =~ fsp ]]; then
   exe="${LOCAL_BIN}/j1fsp.sh ${cmd_args[@]}"
-elif [[ ${args[@]} =~ setup|site|reset ]]; then
+elif [[ ${args[@]} =~ setup|site|reset|app|bump|clean|cy|gem|ver ]]; then
   exe="${USR_BIN}/yarn ${args[@]}"
 elif [[ ${args[@]} =~ clone|pull ]]; then
   exe="${USR_BIN}/git ${args[@]}"
