@@ -38,8 +38,10 @@ if [[ ${args[@]} =~ generate ]]; then
   fi
 elif [[ ${args[@]} =~ fsp ]]; then
   exe="${LOCAL_BIN}/j1fsp.sh ${cmd_args[@]}"
+elif [[ ${args[@]} =~ setup|site|reset ]]; then
+  exe="${USR_BIN}/yarn ${cmd_args[@]}"
 else
-  exe=$BUNDLE_BIN/jekyll
+  exe="$BUNDLE_BIN/jekyll ${cmd_args[@]}"
 fi
 
 # ------------------------------------------------------------------------------
@@ -49,31 +51,33 @@ fi
 # can happen in a scenario if jekyll is called like `jekyll new`
 # to create a new site.
 # ------------------------------------------------------------------------------
-if [ "$(id -u)" != "0" ] && [[ ${exe} =~ jekyll ]]; then
+if [[ "$(id -u)" != "0" ]] && [[ ${exe} =~ jekyll ]]; then
   exec $BUNDLE_BIN/jekyll "$@"
 fi
 
 # ------------------------------------------------------------------------------
 # Set the correct ownership for the run-time environment
 # ------------------------------------------------------------------------------
-[ -d ".cache" ] && chown -R j1:j1 .cache
-[ -d ".jekyll-cache" ] && chown -R j1:j1 .jekyll-cache
-[ -d ".sass-cache" ] && chown -R j1:j1 .sass-cache
-[ -d "_site" ] && chown -R j1:j1 _site
+[[ -d .cache ]] && chown -R j1:j1 .cache
+[[ -d .jekyll-cache ]] && chown -R j1:j1 .jekyll-cache
+[[ -d .sass-cache ]] && chown -R j1:j1 .sass-cache
+[[ -d _site ]] && chown -R j1:j1 _site
 
 # ------------------------------------------------------------------------------
 # Install RubyGems if a Gemfile is found AND the network status
 # is detected as CONNECTED (to the Internet)
 # ------------------------------------------------------------------------------
-if [ -f "Gemfile" ] && connected; then
+if [[ -f Gemfile ]] && connected; then
   bundle install
 fi
 
+# ------------------------------------------------------------------------------
+# Print Ruby version as a banner
+# ------------------------------------------------------------------------------
 echo "$(ruby --version)"
-sup_args=""
 
 # ------------------------------------------------------------------------------
-# Run the final command and arg list
+# Run the final command using the arg list
 # ------------------------------------------------------------------------------
 if [[ ${exe} =~ jekyll ]]; then
   su-exec j1 bundle exec $exe ${args[@]}

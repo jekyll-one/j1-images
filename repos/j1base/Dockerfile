@@ -50,6 +50,7 @@ ENV J1_DATA_DIR=/j1/data
 ENV J1_HOME=/usr/j1
 ENV J1_BIN=/usr/j1/bin
 ENV J1_ENV=development
+ENV USR_BIN=/usr/bin
 ENV LOCAL_BIN=/usr/local/bin
 ENV DEBUG=false
 
