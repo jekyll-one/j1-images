@@ -55,7 +55,7 @@ fi
 # can happen in a scenario if jekyll is called like `jekyll new`
 # to create a new site.
 # ------------------------------------------------------------------------------
-if [[ "$(id -u)" != "0" ]] && [[ ${exe} =~ jekyll ]]; then
+if [[ $(id -u) != 0 ]] && [[ ${exe} =~ jekyll ]]; then
   exec $BUNDLE_BIN/jekyll "$@"
 fi
 
@@ -73,6 +73,14 @@ fi
 # ------------------------------------------------------------------------------
 if [[ -f Gemfile ]] && connected; then
   bundle install
+fi
+
+# ------------------------------------------------------------------------------
+# GIT - Set minimal globals (user)
+# ------------------------------------------------------------------------------
+if [[ $(id -u) != 0 ]] && [[ ${exe} =~ git ]]; then
+  su-exec j1 git config --global user.email $(echo $GIT_USER_EMAIL)
+  su-exec j1 git config --global user.name  $(echo $GIT_USER_NAME)
 fi
 
 # ------------------------------------------------------------------------------

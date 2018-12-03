@@ -66,6 +66,12 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US
 
 # ------------------------------------------------------------------------------
+# USER - Export environment settings
+# ------------------------------------------------------------------------------
+ENV GIT_USER_EMAIL="juergen@jekyll-one.com"
+ENV GIT_USER_NAME_"Juergen Adams"
+
+# ------------------------------------------------------------------------------
 # MAIN - Export environment settings
 # ------------------------------------------------------------------------------
 ENV VERBOSE=false
@@ -197,6 +203,11 @@ RUN chown -R j1:j1 $BUNDLE_HOME
 RUN rm -rf $BUNDLE_HOME/cache
 RUN rm -rf $GEM_HOME/cache
 
+# ------------------------------------------------------------------------------
+# GIT - Set minimal globals (root)
+# ------------------------------------------------------------------------------
+RUN git config --global user.email $(echo $GIT_USER_EMAIL)
+RUN git config --global user.name  $(echo $GIT_USER_NAME)
 
 # ------------------------------------------------------------------------------
 # Set the environment for the app
