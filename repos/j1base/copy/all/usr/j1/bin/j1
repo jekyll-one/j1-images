@@ -39,7 +39,11 @@ if [[ ${args[@]} =~ generate ]]; then
 elif [[ ${args[@]} =~ fsp ]]; then
   exe="${LOCAL_BIN}/j1fsp.sh ${cmd_args[@]}"
 elif [[ ${args[@]} =~ setup|site|reset ]]; then
-  exe="${USR_BIN}/yarn ${cmd_args[@]}"
+  exe="${USR_BIN}/yarn ${args[@]}"
+elif [[ ${args[@]} =~ clone|pull ]]; then
+  exe="${USR_BIN}/git ${args[@]}"
+elif [[ ${args[@]} =~ install|update ]]; then
+  exe="${J1_BIN}/bundle ${args[@]}"
 else
   exe="$BUNDLE_BIN/jekyll ${cmd_args[@]}"
 fi
@@ -79,7 +83,7 @@ echo "$(ruby --version)"
 # ------------------------------------------------------------------------------
 # Run the final command using the arg list
 # ------------------------------------------------------------------------------
-if [[ ${exe} =~ jekyll ]]; then
+if [[ ${exe} =~ \bjekyll\b ]]; then
   su-exec j1 bundle exec $exe ${args[@]}
 else
   su-exec j1 ${exe}
