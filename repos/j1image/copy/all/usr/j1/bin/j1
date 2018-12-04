@@ -33,9 +33,9 @@ cmd_args=("${args[@]:1}")
 if [[ ${args[@]} =~ build|cache|clean|help|list|push ]]; then
   exe="docker-template"
 elif [[ ${args[@]} =~ clone|pull ]]; then
-  exe="${USR_BIN}/git ${args[@]}"
+  exe="${USR_BIN}/git"
 elif [[ ${args[@]} =~ ruby ]]; then
-  exe="ruby"
+  exe="${USR_BIN}/ruby"
 else
   exe="unknown"
 fi
@@ -59,6 +59,8 @@ if [[ ${exe} =~ docker-template ]]; then
   else
     su-exec j1 $exe ${args[@]}
   fi
+elif [[ ${exe} =~ git|ruby ]]; then
+  su-exec j1 $exe ${args[@]}
 else
   echo "Cannot understand your command: ${args[@]}"
   # su-exec j1 j1-image help
