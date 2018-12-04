@@ -47,7 +47,7 @@ ENV J1_VERSION=<%= @meta.release?? @meta.release : @meta.tag %>
 ENV J1_DOCKER_COMMIT=<%= `git rev-parse --verify HEAD`.strip %>
 ENV J1_DOCKER_NAME=<%= @meta.name %>
 ENV J1_DATA_DIR=/j1/data
-ENV J1_HOME=/usr/j1
+ENV J1_HOME=/home/j1
 ENV J1_BIN=/usr/j1/bin
 ENV J1_ENV=development
 ENV USR_BIN=/usr/bin
@@ -125,16 +125,16 @@ RUN apk --no-cache add \
   && yarn global add lerna
 
 # ------------------------------------------------------------------------------
-# LANGUAGE - Install Python
+# LANGUAGE - Install Python (not longer used)
 # ------------------------------------------------------------------------------
-RUN apk add --update \
-  python \
-  python-dev \
-  py-pip \
-  build-base \
-  && pip install --upgrade pip \
-  && pip install virtualenv \
-  && rm -rf /var/cache/apk/*
+#RUN apk add --update \
+#  python \
+#  python-dev \
+#  py-pip \
+#  build-base \
+#  && pip install --upgrade pip \
+#  && pip install virtualenv \
+#  && rm -rf /var/cache/apk/*
 
 # ------------------------------------------------------------------------------
 # USER - Install User defined Packages
@@ -144,15 +144,15 @@ RUN apk add --update \
 <% end %>
 
 # ------------------------------------------------------------------------------
-# RUBYGEM - Disable RI|RDOC processing for all RubyGem
+# RUBYGEM - Disable RI|RDOC processing for all RubyGem (created via copy)
 # ------------------------------------------------------------------------------
-RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-RUN echo "gem: --no-ri --no-rdoc" > $J1_HOME/.gem
+#RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
+#RUN echo "gem: --no-ri --no-rdoc" > $J1_HOME/.gemrc
 
 # ------------------------------------------------------------------------------
 # RUBYGEM - Update
 # ------------------------------------------------------------------------------
-# RUN yes | gem update --system
+RUN yes | gem update --system
 
 # ------------------------------------------------------------------------------
 # RUBYGEM - Base Ruby and Jekyll Rubies
@@ -206,7 +206,6 @@ RUN git config --global user.name  $(echo $GIT_USER_NAME)
 # ------------------------------------------------------------------------------
 # Set the environment for the app
 # ------------------------------------------------------------------------------
-#VOLUME  /j1/data
 WORKDIR $J1_DATA_DIR
 CMD ["j1", "--help"]
 ENTRYPOINT ["/usr/j1/bin/entrypoint"]
@@ -220,8 +219,8 @@ EXPOSE 40000
 # ------------------------------------------------------------------------------
 # PYTHON - Install all required libraries on NEXT build (e.g. j1:latest)
 # ------------------------------------------------------------------------------
-ONBUILD RUN virtualenv /env \
-  && /env/bin/pip install -r /usr/python/requirements.txt
+#ONBUILD RUN virtualenv /env \
+#  && /env/bin/pip install -r /usr/python/requirements.txt
 
 # ------------------------------------------------------------------------------
 # RUBYGEM - Vendorize all System Rubies on NEXT build (e.g. j1:latest)
