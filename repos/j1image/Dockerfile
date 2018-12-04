@@ -46,6 +46,7 @@ ENV J1_DOCKER_TAG=<%= @meta.tag %>
 ENV J1_VERSION=<%= @meta.release?? @meta.release : @meta.tag %>
 ENV J1_DOCKER_NAME=<%= @meta.name %>
 ENV J1_DATA_DIR=/j1/data
+ENV J1_BIN_DIR=/usr/j1/bin
 ENV USR_BIN=/usr/bin
 ENV LOCAL_BIN=/usr/local/bin
 ENV DEBUG=false
