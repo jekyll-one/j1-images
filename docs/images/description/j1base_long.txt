@@ -1,0 +1,5 @@
+The image **j1base** is intended to be used for all development and run-time tasks of J1. It can be used to manage standard **Jekyll** sites as well as webs based on **J1 Template**.
+
+The image contains - beside the neeeded RubyGems for **Jekyll** and **J1 Template** - **all development dependencies** like Git and the languages Ruby, Python and NodeJS ready to use.
+
+For more details on how to **use** and **create** images, see the [README](https://github.com/jekyll-one/j1_image/blob/master/README.md) on Github.

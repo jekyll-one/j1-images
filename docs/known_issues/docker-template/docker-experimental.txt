@@ -1,0 +1,45 @@
+Error
+-----
+
+Building: jekyllone/j1dev:3.8.4
+bundler: failed to load command: docker-template (path_to:docker-template)
+Docker::Error::ClientError: squash is only supported with experimental mode
+
+Reason
+------
+Docker::Error::ClientError: squash is only supported with experimental mode
+
+Solution
+--------
+
+Enable "experimental mode" for Docker.
+See: http://docs.docker.oeynet.com/engine/reference/commandline/build/#squash-an-images-layers-squash-experimental-only
+
+Experimental features are included in the standard Docker binaries as of
+version 1.13.0. To enable experimental features, start the Docker daemon
+with --experimental flag.
+
+You can also enable the daemon flag via /etc/docker/daemon.json. e.g.
+
+{
+    "experimental": true
+}
+
+!!! Doesn't work -->
+
+For Ubuntu 14.04, Docker daemon options are specified as part of Upstart
+system manager. This is how I enabled experimental mode in Ubuntu:
+
+Change|Add in /etc/default/docker:
+
+# Enable experimental mode
+DOCKER_OPTS="--experimental=true"
+
+Restart the docker daemon to activate configuration changes:
+
+$ sudo service docker restart
+
+Make sure the experimental flag is enabled (should: true):
+
+$ docker version -f '{{.Server.Experimental}}'
+true

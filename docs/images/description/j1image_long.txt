@@ -1,0 +1,18 @@
+**J1 Image** is used to **create and manage** Docker images for developing and running static **Jekyll Webs**. The images created are optimized for the **J1 Template** project but can be used for **all** Jekyll based web sites as well.
+
+**Example**
+
+Run the two docker commands below. The first will clone the **J1 Images** project from _Github_ to your projects folder (using the build-in git CLI). The project get written to a new directory *j1_images*. Change to that folder and run the second Docker container to create the base image **j1base** used for all **J1 Template** based  web sites as a base.
+
+```bash
+docker run --rm \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1image:latest \
+  j1 clone https://github.com/jekyll-one/j1_images.git
+
+docker run --rm \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1image \
+  j1 build j1base:latest
+```
