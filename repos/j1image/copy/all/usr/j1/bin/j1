@@ -32,6 +32,8 @@ cmd_args=("${args[@]:1}")
 # ------------------------------------------------------------------------------
 if [[ ${args[@]} =~ build|cache|clean|help|list|push ]]; then
   exe="docker-template"
+elif [[ ${args[@]} =~ clone|pull ]]; then
+  exe="${USR_BIN}/git ${args[@]}"
 elif [[ ${args[@]} =~ ruby ]]; then
   exe="ruby"
 else
