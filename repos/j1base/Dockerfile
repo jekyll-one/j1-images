@@ -122,7 +122,7 @@ RUN apk --no-cache add \
   nodejs \
   nodejs-npm \
   yarn \
-  && yarn global add lerna
+  && yarn global add lerna@2.11.0
 
 # ------------------------------------------------------------------------------
 # LANGUAGE - Install Python (not longer used)
