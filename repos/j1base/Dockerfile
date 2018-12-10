@@ -206,6 +206,7 @@ RUN git config --global user.name  $(echo $GIT_USER_NAME)
 # ------------------------------------------------------------------------------
 # Set the environment for the app
 # ------------------------------------------------------------------------------
+ENV SINATRA_ACTIVESUPPORT_WARNING=false
 WORKDIR $J1_DATA_DIR
 CMD ["j1", "--help"]
 ENTRYPOINT ["/usr/j1/bin/entrypoint"]

@@ -12,7 +12,6 @@
 # ------------------------------------------------------------------------------
 aliases:
   j1image:  jekyllone/j1image:latest
-  j1app:    jekyllone/j1app:latest
 gems:
   all:
     - forwardable-extended
