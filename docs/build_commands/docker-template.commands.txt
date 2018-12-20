@@ -20,10 +20,13 @@ Built latest j1image repo
 -------------------------
 
 docker-template build j1image:latest
+bundle exec docker-template build j1image:latest
+
 
 Built latest j1base repo
 -----------------------
 
+docker-template build j1base:latest
 bundle exec docker-template build j1base:latest
 
 

@@ -14,10 +14,12 @@
 #
 gems:
   all:
+    - bundler
     - dotenv
     - fileutils
     - forwardable-extended
     - j1_template_mde
+    - jekyll
     - logger
     - mercenary
     - pathutil

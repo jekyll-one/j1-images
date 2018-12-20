@@ -159,12 +159,13 @@ RUN yes | gem update --system
 # ------------------------------------------------------------------------------
 # Prevent vendored bundles to fail.
 # See: https://github.com/rubygems/rubygems/issues/2062
-RUN gem install bundler
-RUN gem install jekyll -v<%= @meta.release?? \
-  @meta.release : @meta.tag %> -- --use-system-libraries
+#RUN gem install bundler
+#RUN gem install jekyll -v<%= @meta.release?? \
+#  @meta.release : @meta.tag %> -- --use-system-libraries
+#RUN gem install jekyll -v3.8.5 -- --use-system-libraries
 
 # ------------------------------------------------------------------------------
-# RUBYGEM - Base User Rubies
+# RUBYGEM - Base Ruby, Jekyll and User Rubies
 # ------------------------------------------------------------------------------
 <% if @meta.gems? %>
   # Use system-libraries for all RubyGem to speedup slow builts of Rubies
