@@ -1,1 +1,1 @@
-Manages all development and runtime tasks for web sites based on J1, only selected RubyGem included
+Manages all development and runtime tasks for web sites based on J1 - Selected RubyGem included

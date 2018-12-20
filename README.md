@@ -231,37 +231,6 @@ local host, point your browser to this URL to access that web:
 If you are developing on a remote host, go for the following section
 **Developing on a remote Host**.
 
-### Developing on a remote Host
-
-For Javascript development, J1 Template is using **Webpack V4**. If you plan
-to develop on a remote system (or on a host e.g. behind a Proxy), WP's host
-checking needs to be **disabled** by setting the environment variable
-`DISABLE_WP_HOST_CHECK` to `true`.
-
-Run the site like so:
-
-```sh
-docker run --rm \
-  --env DISABLE_WP_HOST_CHECK=true \
-  --volume=$PWD:/j1/data \
-  --publish=35729:35729 --publish=41000:41000 \
-  -it jekyllone/mydev:latest \
-  yarn site
-```
-
-If `DISABLE_WP_HOST_CHECK` is set to `true`, it's possible to use a remote
-host for development.
-
-Use the URL:
-
-> `http://<hostname>:41000/`
-
-to access the web on your remote system.
-
-> **WARNING**
-> Be aware that this setting may cause **security issues** and should be
-> used only, if you know what you're doing.
-
 ## Creating your own Docker images
 
 You can create J1 Docker images for your needs. If you've addedd additional
@@ -298,7 +267,7 @@ docker run \
   --name temp_container \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
-  bundle install
+  j1 install
 ```
 
 And commit the temp container for your new image:
