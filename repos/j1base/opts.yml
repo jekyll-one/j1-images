@@ -10,16 +10,21 @@
 # J1 Template is licensed under the MIT License.
 # See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
 # ------------------------------------------------------------------------------
+# NOTE:
+#   Added i18n v0.9.5 for the development sytem
+# ------------------------------------------------------------------------------
+# TODO:
+#   To be identified what componets requires i18n v0.9.5
+# ------------------------------------------------------------------------------
 # aliases:
 #
 gems:
   all:
     - bundler:1.17.2
     - dotenv:2.5.0
-#   - fileutils
     - forwardable-extended:2.6.0
+    - i18n:0.9.5
     - j1_template_mde
     - jekyll:3.8.5
-#   - logger
     - mercenary:0.3.6
     - pathutil:0.16.2
