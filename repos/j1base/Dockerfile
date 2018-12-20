@@ -125,18 +125,6 @@ RUN apk --no-cache add \
   && yarn global add lerna@2.11.0
 
 # ------------------------------------------------------------------------------
-# LANGUAGE - Install Python (not longer used)
-# ------------------------------------------------------------------------------
-#RUN apk add --update \
-#  python \
-#  python-dev \
-#  py-pip \
-#  build-base \
-#  && pip install --upgrade pip \
-#  && pip install virtualenv \
-#  && rm -rf /var/cache/apk/*
-
-# ------------------------------------------------------------------------------
 # USER - Install User defined Packages
 # ------------------------------------------------------------------------------
 <% if @meta.packages? %>
@@ -144,25 +132,9 @@ RUN apk --no-cache add \
 <% end %>
 
 # ------------------------------------------------------------------------------
-# RUBYGEM - Disable RI|RDOC processing for all RubyGem (created via copy)
-# ------------------------------------------------------------------------------
-#RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-#RUN echo "gem: --no-ri --no-rdoc" > $J1_HOME/.gemrc
-
-# ------------------------------------------------------------------------------
 # RUBYGEM - Update
 # ------------------------------------------------------------------------------
 RUN yes | gem update --system
-
-# ------------------------------------------------------------------------------
-# RUBYGEM - Base Ruby and Jekyll Rubies
-# ------------------------------------------------------------------------------
-# Prevent vendored bundles to fail.
-# See: https://github.com/rubygems/rubygems/issues/2062
-#RUN gem install bundler
-#RUN gem install jekyll -v<%= @meta.release?? \
-#  @meta.release : @meta.tag %> -- --use-system-libraries
-#RUN gem install jekyll -v3.8.5 -- --use-system-libraries
 
 # ------------------------------------------------------------------------------
 # RUBYGEM - Base Ruby, Jekyll and User Rubies
@@ -218,12 +190,6 @@ ENTRYPOINT ["/usr/j1/bin/entrypoint"]
 # -------------------------------------------------------------------------
 EXPOSE 35729
 EXPOSE 40000
-
-# ------------------------------------------------------------------------------
-# PYTHON - Install all required libraries on NEXT build (e.g. j1:latest)
-# ------------------------------------------------------------------------------
-#ONBUILD RUN virtualenv /env \
-#  && /env/bin/pip install -r /usr/python/requirements.txt
 
 # ------------------------------------------------------------------------------
 # RUBYGEM - Vendorize all System Rubies on NEXT build (e.g. j1:latest)
