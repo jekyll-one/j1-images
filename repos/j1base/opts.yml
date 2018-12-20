@@ -17,9 +17,9 @@ gems:
     - bundler:1.17.2
     - dotenv:2.5.0
 #   - fileutils
-    - forwardable-extended:'2.6.0'
+    - forwardable-extended:2.6.0
     - j1_template_mde
-    - jekyll:2.6.0
+    - jekyll:3.8.5
 #   - logger
     - mercenary:0.3.6
     - pathutil:0.16.2
