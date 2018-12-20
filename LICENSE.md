@@ -1,4 +1,4 @@
-Copyright (c) 2018 Juergen Adams
+Copyright (C) 2019 Juergen Adams
 Copyright (c) 2015-2017 Jordon Bedwell
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of

@@ -5,7 +5,7 @@
 # Product/Info:
 # https://jekyll-one.com
 #
-# Copyright (C) 2018 Juergen Adams
+# Copyright (C) 2019 Juergen Adams
 #
 # J1 Template is licensed under the MIT License.
 # See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
