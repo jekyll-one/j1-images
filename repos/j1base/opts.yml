@@ -14,11 +14,10 @@ aliases:
   j1image:  jekyllone/j1image:latest
 gems:
   all:
+    - dotenv
+    - fileutils
     - forwardable-extended
+    - j1_template_mde
+    - logger
     - mercenary
     - pathutil
-    - fileutils
-    - logger
-    - colorator
-    - dotenv
-    - j1_template_mde

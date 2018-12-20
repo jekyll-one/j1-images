@@ -190,6 +190,7 @@ RUN chmod -R ug+x $J1_BIN
 RUN chown -R j1:j1 $J1_DATA_DIR
 RUN chown -R j1:j1 $J1_VAR_DIR
 RUN chown -R j1:j1 $BUNDLE_HOME
+RUN chown -R j1:j1 $GEM_HOME
 
 # ------------------------------------------------------------------------------
 # SETUP - Cleanup Application folders
@@ -200,8 +201,8 @@ RUN rm -rf $GEM_HOME/cache
 # ------------------------------------------------------------------------------
 # GIT - Set minimal globals (root)
 # ------------------------------------------------------------------------------
-RUN git config --global user.email $(echo $GIT_USER_EMAIL)
-RUN git config --global user.name  $(echo $GIT_USER_NAME)
+#RUN git config --global user.email $(echo $GIT_USER_EMAIL)
+#RUN git config --global user.name  $(echo $GIT_USER_NAME)
 
 # ------------------------------------------------------------------------------
 # Set the environment for the app
