@@ -1,0 +1,46 @@
+Initialize docker-template
+--------------------------
+
+bundle install
+
+
+Login on Docker Hub
+-------------------
+
+jadams@ubuntu:j1docker> docker login
+
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: jekyllone
+Password:
+WARNING! Your password will be stored unencrypted in /home/jadams/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Built latest j1image repo
+-------------------------
+
+docker-template build j1image:latest
+
+Built latest j1base repo
+-----------------------
+
+bundle exec docker-template build j1base:latest
+
+
+Publish on Github
+-----------------
+
+See: https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git
+
+git remote add origin https://github.com/jekyll-one/j1docker.git
+git push -u origin master
+
+
+
+Commands:
+  docker-template build [REPOS [OPTS]]  # Build all (or some) of your repositories.
+  docker-template cache [REPOS [OPTS]]  # Cache all (or some) of your repositories.
+  docker-template clean [REPOS [OPTS]]  # Clean all (or some) of your repositories caches.
+  docker-template help [COMMAND]        # Describe available commands or one specific command
+  docker-template list [OPTS]           # List all possible builds.
+  docker-template push [REPOS [OPTS]]   # Push all (or some) of your repositories.

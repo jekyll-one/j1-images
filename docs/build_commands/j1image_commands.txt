@@ -1,0 +1,89 @@
+Build the image 'j1image'
+--------------------------------------------------------------------------------
+docker-template build j1image:latest
+
+
+Run a interactive shell
+--------------------------------------------------------------------------------
+docker run --rm \
+  --env DEBUG=true \
+  --name j1image \
+  --hostname j1image \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1image:latest \
+  bash
+
+Build the base image 'j1base'
+--------------------------------------------------------------------------------
+docker run --rm \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1image \
+  j1 build j1base:latest
+
+Create a starter web using image 'j1base'
+--------------------------------------------------------------------------------
+
+cd "zum e.g. folder j1webs"
+
+docker run \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1base:latest \
+  j1 generate starter
+
+
+Build the full-blown image 'j1'
+--------------------------------------------------------------------------------
+cd "zum e.g. starter"
+
+docker run \
+  --name temp \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1base:latest \
+  bundle install
+
+docker commit temp jekyllone/j1:latest && \
+docker container rm -f temp
+
+Create and run a starter web using the image 'j1'
+--------------------------------------------------------------------------------
+
+# Run yarn on OSX/Windows
+docker run \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1:latest \
+  yarn detect-docker
+
+
+# Run yarn on OSX/Windows
+docker run \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1:latest \
+  yarn setup
+
+# Run yarn on Linux
+ docker run \
+  --user $(id -u $(whoami)) \
+  --volume=$PWD:/j1/data \
+  -it jekyllone/j1:latest \
+  yarn setup
+
+
+# All platforms
+docker run \
+  --volume=$PWD:/j1/data \
+  --publish=35729:35729 --publish=40000:40000 \
+  -it jekyllone/j1:latest \
+  j1 serve --incremental --livereload
+
+
+To be checked if needed ..
+
+# Linux
+ docker run \
+  --user $(id -u $(whoami)) \
+  --volume=$PWD:/j1/data \
+  --publish=35729:35729 --publish=40000:40000 \
+  -it jekyllone/j1:latest \
+  j1 serve --incremental --livereload

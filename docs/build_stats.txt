@@ -1,0 +1,31 @@
+LINUX
+
+Linked Rubies
+-------------
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+jekyllone/j1base    3.8.5               cf6fa3abbd72        8 seconds ago       868MB
+jekyllone/j1base    latest              cf6fa3abbd72        8 seconds ago       868MB
+ruby                alpine3.8           2b1694a122af        3 weeks ago         45.2MB
+
+NOT Linked Rubies
+-----------------
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+jekyllone/j1base    3.8.5               49fe0e60160c        5 seconds ago       660MB
+jekyllone/j1base    latest              49fe0e60160c        5 seconds ago       660MB
+ruby                alpine3.8           2b1694a122af        3 weeks ago         45.2MB
+
+Linked Rubies ONBUILD
+---------------------
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+jekyllone/j1base    3.8.5               84c1858b3006        7 seconds ago       660MB
+jekyllone/j1base    latest              84c1858b3006        7 seconds ago       660MB
+ruby                alpine3.8           2b1694a122af        3 weeks ago         45.2MB
+
+
+MACOS/OSX
+
+Linked Rubies ONBUILD
+---------------------
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+jekyllone/j1        latest              93cb3a4808ec        13 hours ago        798MB
+jekyllone/j1base    latest              7c1c25aa5d5c        15 hours ago        559MB

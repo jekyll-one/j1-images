@@ -1,0 +1,44 @@
+NOTE
+
+docker run --rm \
+  --user $(id -u $(whoami)) \
+  --volume=$PWD:/srv/jekyll \
+  -it jekyllone/j1base:latest \
+  git clone https://github.com/jekyll-one/j1_template_mde_dev.git
+
+
+Eigenes j1dev:latest erzeugen
+
+# OSX/Windows
+docker run \
+  --name j1dev \
+  --volume=$PWD:/srv/jekyll \
+  -it jekyllone/j1base:latest \
+  yarn setup
+
+# Linux
+ docker run \
+  --env DEBUG=true \
+  --user $(id -u $(whoami)) \
+  --name j1dev \
+  --volume=$PWD:/srv/jekyll \
+  -it jekyllone/j1base:latest \
+  yarn setup
+
+ docker commit j1dev jekyllone/j1dev:latest
+
+
+ docker run --rm \
+  --name develop \
+  --hostname j1develop \
+  --volume=$PWD:/srv/jekyll \
+  -p 35729:35729 -p 41000:41000 \
+  -it jekyllone/j1dev:latest \
+  yarn site
+
+
+
+docker run --rm \
+  --volume=$PWD:/srv/jekyll \
+  -it jekyllone/j1base:latest \
+  yarn reset
