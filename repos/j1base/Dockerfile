@@ -52,6 +52,7 @@ ENV J1_BIN=/usr/j1/bin
 ENV J1_ENV=development
 ENV USR_BIN=/usr/bin
 ENV LOCAL_BIN=/usr/local/bin
+ENV LOCAL_LIB=/usr/local/lib
 ENV DEBUG=false
 
 # ------------------------------------------------------------------------------
@@ -164,6 +165,9 @@ RUN chown -R j1:j1 $J1_DATA_DIR
 RUN chown -R j1:j1 $J1_VAR_DIR
 RUN chown -R j1:j1 $BUNDLE_HOME
 RUN chown -R j1:j1 $GEM_HOME
+RUN chmod -R ug+x $LOCAL_BIN
+RUN chown -R j1:j1 $LOCAL_BIN
+RUN chown -R j1:j1 $LOCAL_LIB
 
 # ------------------------------------------------------------------------------
 # SETUP - Cleanup Application folders

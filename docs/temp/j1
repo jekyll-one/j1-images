@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+# ------------------------------------------------------------------------------
+# ~/repos/dev/helper/all/usr/jekyll/bin/j1
+# J1 Docker - Helper script that defines the main control
+# interface for the image
+#
+# Product/Info:
+# https://jekyll-one.com
+#
+# Copyright (C) 2018 Juergen Adams
+#
+# J1 Template is licensed under the MIT License.
+# See: https://github.com/jekyll-one/j1_template_mde/blob/master/LICENSE
+# ------------------------------------------------------------------------------
+# NOTE:
+#
+# ------------------------------------------------------------------------------
+set -e
+
+[[ ${DEBUG} == true ]] && set -x
+
+args=($(default-args $@))
+cmd_args=("${args[@]:1}")
+
+[[ ${DEBUG} == true ]] && echo "j1 cmd_args:   ${cmd_args[@]}"
+[[ ${DEBUG} == true ]] && echo "j1 default-args: ${args[@]}"
+
+# ------------------------------------------------------------------------------
+# Detect, based on the arg list, what binary or script is
+# to be executed
+# ------------------------------------------------------------------------------
+if [[ ${args[@]} =~ generate ]]; then
+  if [[ ${args[@]} =~ skip-bundle ]]; then
+    exe="${GEM_BIN}/j1 ${args[@]}"
+  else
+    exe="${GEM_BIN}/j1 ${args[@]} --skip-bundle"
+  fi
+elif [[ ${args[@]} =~ fsp ]]; then
+  exe="${LOCAL_BIN}/j1fsp.sh ${cmd_args[@]}"
+elif [[ ${args[@]} =~ setup|site|reset|app|bump|clean|gem|ver ]]; then
+  exe="${USR_BIN}/yarn ${args[@]}"
+elif [[ ${args[@]} =~ clone|pull ]]; then
+  exe="${USR_BIN}/git ${args[@]}"
+elif [[ ${args[@]} =~ install|update ]]; then
+  exe="${J1_BIN}/bundle ${args[@]}"
+else
+  exe="$BUNDLE_BIN/jekyll ${cmd_args[@]}"
+fi
+
+# ------------------------------------------------------------------------------
+# If the user id detected is NOT root (ID 0) this call of the
+# script is run by something wrapped or recalled. In such case,
+# it is needed to ship this run-time to the right spot. This
+# can happen in a scenario if jekyll is called like `jekyll new`
+# to create a new site.
+# ------------------------------------------------------------------------------
+if [[ $(id -u) != 0 ]] && [[ ${exe} =~ jekyll ]]; then
+  exec $BUNDLE_BIN/jekyll "$@"
+fi
+
+# ------------------------------------------------------------------------------
+# Set the correct ownership for the run-time environment
+# ------------------------------------------------------------------------------
+[[ -d .cache ]] && chown -R j1:j1 .cache
+[[ -d .jekyll-cache ]] && chown -R j1:j1 .jekyll-cache
+[[ -d .sass-cache ]] && chown -R j1:j1 .sass-cache
+[[ -d _site ]] && chown -R j1:j1 _site
+
+# ------------------------------------------------------------------------------
+# Install RubyGems if a Gemfile is found AND the network status
+# is detected as CONNECTED (to the Internet)
+# ------------------------------------------------------------------------------
+if [[ -f Gemfile ]] && connected; then
+  bundle install
+fi
+
+# ------------------------------------------------------------------------------
+# Print Ruby version as a banner
+# ------------------------------------------------------------------------------
+echo "$(ruby --version)"
+
+# ------------------------------------------------------------------------------
+# Run the final command using the arg list
+# ------------------------------------------------------------------------------
+if [[ ${exe} =~ \bjekyll\b ]]; then
+  su-exec j1 bundle exec $exe ${args[@]}
+else
+  su-exec j1 ${exe}
+fi
