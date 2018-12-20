@@ -61,16 +61,11 @@ for your platform, if not already installed.
 To start using J1 Images immediately, already generated images are available
 at [jekyllone](https://hub.docker.com/u/jekyllone/) at Docker Hub:
 
-*   `jekyllone/j1image` - Image to create Docker images for the `J1 template` project from the scratch
-*   `jekyllone/j1app` - Image to run J1 Template based Web sites as an Docker App
-*   [jekyllone/j1base](https://hub.docker.com/r/jekyllone/j1base/) - Base image, all core software bundled,
-only selected RubyGem included
-*   [jekyllone/j1](https://hub.docker.com/r/jekyllone/j1/) - Fully equipped image based on `jekyllone/j1base`
-but includes all Rubies needed to run and develop a web site
-
-> **NOTE**:
-> The image `jekyllone/j1app` is currently under construction and **not**
-> available, yet.
+*   `jekyllone/j1image` - Create Docker images for the `J1 template` project from the scratch
+*   [jekyllone/j1base](https://hub.docker.com/r/jekyllone/j1base/) - Base image for J1 Projects. All core software bundled,
+only **selected** RubyGem included
+*   [jekyllone/j1](https://hub.docker.com/r/jekyllone/j1/) - Fully equipped image based on `jekyllone/j1base`.
+Includes **all** Rubies needed to run and develop a J1-based web site
 
 
 ### Create and run a Web
@@ -134,10 +129,9 @@ local J1 Web folder **j1web**:
 
 ```sh
 docker run --rm \
-  --user $(id -u $(whoami)) \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
-  git clone https://github.com/jekyll-one/j1_template_mde_dev.git
+  j1 clone https://github.com/jekyll-one/j1_template_mde_dev.git
 ```
 
 Change to the newly created directory **j1_template_mde_dev** and initialize
@@ -145,10 +139,9 @@ the development environment for the first use.
 
 ```sh
 docker run --rm \
-  --user $(id -u $(whoami)) \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
-  yarn setup
+  j1 setup
 ```
 
 Setting up the project (for the first use) will take a while - have a break!
@@ -194,7 +187,7 @@ docker run --rm \
   --volume=$PWD:/j1/data \
   --publish=35729:35729 --publish=41000:41000 \
   -it jekyllone/j1:latest \
-  yarn site
+  j1 site
 ```
 
 This starts a new container named **develop** based on jekyllone/j1:latest
@@ -228,8 +221,6 @@ local host, point your browser to this URL to access that web:
 
 > `http://localhost:41000/`
 
-If you are developing on a remote host, go for the following section
-**Developing on a remote Host**.
 
 ## Creating your own Docker images
 
@@ -258,16 +249,16 @@ new images based on existing containers using `docker commit`. First create
 a new container as a base temporarely, then commit this container to a new
 image of your choice.
 
-#### Update for a single Gemfile
+#### Update for a Gemfile
 
 Change to the folder that contains your modified Gemfile:
 
 ```sh
 docker run \
-  --name temp_container \
+  --name temp \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
-  j1 install
+  j1 update
 ```
 
 And commit the temp container for your new image:
@@ -275,20 +266,6 @@ And commit the temp container for your new image:
 ```sh
 docker commit temp_container <your_project/your_image_name_your_version>
 ```
-
-#### Update for all Gemfiles in a Web
-
-In order to update an image for Gemfiles across your project, run a clean task
-using the J1 base image for your modified web:
-
-```sh
-docker run  \
-  --name temp_container \
-  --volume=$PWD:/j1/data \
-  -it jekyllone/j1base:latest \
-  yarn site
-```
-
 
 ## Build J1 Images
 
@@ -324,7 +301,7 @@ docker run --rm \
   j1 clean
 ```
 
-### Remove <none> images after Build
+### Remove none-none images after Build
 
 This will print you all untagged images
 
@@ -343,14 +320,14 @@ docker rm $(docker images ls -a | grep "^<none>" | awk "{print $3}")
 docker image ls -a | grep -v "^<none>"
 ```
 
-## Explore an Image
+## Explore an J1 Image
 
 To have a look inside an image, run a container using a bash (shell):
 
 ```sh
 docker run --rm \
-  --name j1_container \
-  --hostname j1_container \
+  --name j1 \
+  --hostname j1 \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
   bash
@@ -361,38 +338,9 @@ to explore
 
 ```sh
 docker run --rm \
-  --name j1_container \
-  --hostname j1_container \
+  --name j1 \
+  --hostname j1 \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1:latest \
   mc
 ```
-
-## What are none-none images?
-
-See: [What are Docker none:none images?](https://www.projectatomic.io/blog/2015/07/what-are-docker-none-none-images/)
-See: [dockviz](https://github.com/justone/dockviz)
-
-docker image ls -f dangling=true -q
-
-docker image rm -f $(docker image ls -f dangling=true -q)
-
-
-## Untagged images
-
-```sh
-docker image ls -a | grep "^<none>" | awk "{print $3}"
-docker image ls -a | grep "^<none>" | sed 's/  */ /g' | cut -d" " -f 3
-```
-
-This filtering also works for dangling volumes. To remove all those images
-run:
-
-```sh
-docker image rm --force $(docker image ls -a | grep "^<none>" | awk "{print $3}") --force
-docker image rm --force $(docker image ls -a | grep "^<none>" | sed 's/  */ /g' | cut -d" " -f 3)
-```
-
-## Format the output of docker commands
-
-docker images --format '{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}' | sort -r | column -t
