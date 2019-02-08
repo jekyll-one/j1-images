@@ -19,6 +19,7 @@
 set -e
 
 [[ ${DEBUG} == true ]] && set -x
+[[ ${DEBUG} == true ]] && echo "Run: /usr/j1/bin/connected"
 
 con=${J1_VAR_DIR}/con
 dis=${J1_VAR_DIR}/dis

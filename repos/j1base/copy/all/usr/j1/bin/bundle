@@ -18,6 +18,7 @@
 set -e
 
 [[ ${DEBUG} == true ]] && set -x
+[[ ${DEBUG} == true ]] && echo "Run: /usr/j1/bin/bundle"
 
 # ------------------------------------------------------------------------------
 # The "bundle" helper is NOT needed to run if NO Gemfile is found
@@ -40,7 +41,7 @@ if [[ $(id -u) != 0 ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-# Make sure that proper permissions are set on th bundle (files)
+# Make sure that proper permissions are set on the bundle (files)
 # ------------------------------------------------------------------------------
 if [[ $1 =~ install|clean|update ]]; then
   if [[ $(stat -c '%U' ${BUNDLE_HOME}) != j1 ]]; then

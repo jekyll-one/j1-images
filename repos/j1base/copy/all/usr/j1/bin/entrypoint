@@ -18,6 +18,7 @@
 set -e
 
 [[ ${DEBUG} == true ]] && set -x
+[[ ${DEBUG} == true ]] && echo "Run: /usr/j1/bin/entrypoint"
 
 # ------------------------------------------------------------------------------
 : ${J1_UID:=$(id -u j1)}
@@ -28,11 +29,9 @@ export J1_UID
 export J1_GID
 
 # ------------------------------------------------------------------------------
-#   Users can customize our UID's to fit their own so that
-#   we don't have to chown constantly.  Well it's not like
-#   we do so much of it (anymore) it's slow, but we do
-#   change permissions which can result in some bad
-#   behavior on OSX.
+# Users can customize our UID's to fit their own so that don't chown them
+# constantly.  Well it's not like we do so much of it (anymore) it's slow,
+# but we do change permissions which can result in some bad behavior on OSX.
 # ------------------------------------------------------------------------------
 if [[ ${J1_UID} != 0 ]] && [[ ${J1_UID} != $(id -u j1) ]]; then
   usermod  -u $J1_UID j1
@@ -40,7 +39,7 @@ if [[ ${J1_UID} != 0 ]] && [[ ${J1_UID} != $(id -u j1) ]]; then
   chown_args=""
 
   [[ ${FULL_CHOWN} ]] && chown_args="-R"
-  for d in "$JEKYLL_DATA_DIR" "$JEKYLL_VAR_DIR"; do
+  for d in "$J1_DATA_DIR" "$J1_VAR_DIR"; do
     chown $chown_args j1:j1 "$d"
   done
 fi

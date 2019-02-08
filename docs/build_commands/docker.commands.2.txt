@@ -19,7 +19,7 @@ docker run \
 # Linux
  docker run \
   --env DEBUG=true \
-  --user $(id -u $(whoami)) \
+  --user $(id -u $(whoami)):$(id -g $(whoami)) \
   --name j1dev \
   --volume=$PWD:/srv/jekyll \
   -it jekyllone/j1base:latest \
@@ -27,6 +27,7 @@ docker run \
 
  docker commit j1dev jekyllone/j1dev:latest
 
+echo $(id -u):$(id -g)
 
  docker run --rm \
   --name develop \

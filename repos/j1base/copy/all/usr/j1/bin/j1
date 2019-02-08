@@ -19,6 +19,7 @@
 set -e
 
 [[ ${DEBUG} == true ]] && set -x
+[[ ${DEBUG} == true ]] && echo "Run: /usr/j1/bin/j1"
 
 args=($(default-args $@))
 cmd_args=("${args[@]:1}")

@@ -149,9 +149,9 @@ RUN yes | gem update --system
 # ------------------------------------------------------------------------------
 # SETUP - Set user and groups
 # ------------------------------------------------------------------------------
-RUN addgroup -Sg 99999 j1
-RUN adduser  -Su 99999 -G j1 j1
-RUN addgroup -Sg 99990 cifs
+RUN addgroup -Sg 1000 j1
+RUN adduser  -Su 1000 -G j1 j1
+RUN addgroup -Sg 5555 cifs
 RUN usermod  -aG cifs j1
 
 # ------------------------------------------------------------------------------
