@@ -37,7 +37,7 @@ Build the full-blown image 'j1'
 --------------------------------------------------------------------------------
 cd "zum e.g. starter"
 
-docker run \
+docker run \vi st
   --name temp \
   --volume=$PWD:/j1/data \
   -it jekyllone/j1base:latest \

@@ -32,7 +32,7 @@ gems:
     - fast_blank:1.0.0
     - forwardable-extended:2.6.0
     - i18n:0.9.5
-    - j1_template_mde:2018.4.23
+    - j1_template_mde:2018.4.28
     - jekyll:3.8.5
     - listen:3.0.8
     - mercenary:0.3.6
