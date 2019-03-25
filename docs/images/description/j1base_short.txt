@@ -1,1 +1,1 @@
-Manages all development and runtime tasks for j1 webs
+Manages all development and runtime tasks for J1 Webs
