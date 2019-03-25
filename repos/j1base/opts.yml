@@ -38,3 +38,4 @@ gems:
     - mercenary:0.3.6
     - middleman-core:4.2.1
     - pathutil:0.16.2
+    - parallel:1.15.0

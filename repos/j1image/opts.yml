@@ -35,7 +35,6 @@ gems:
     - net-http-persistent:2.9.4
     - net-http-pipeline:1.0.1
     - pathutil:0.16.2
-    - parallel:1.15.0
     - pry:0.12.2
     - pusher-client:0.6.2
     - simple-ansi:1.0.2
